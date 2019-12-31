@@ -27,3 +27,5 @@ echo "JSMpeg.WASM_BINARY_INLINED='$(cat jsmpeg-wasm.base64)';" \
 	>> jsmpeg.js
 
 cp jsmpeg.js example/jsmpeg.js
+
+echo "build completed"

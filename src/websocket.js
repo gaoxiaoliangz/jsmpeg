@@ -22,6 +22,9 @@ var WSSource = function(url, options) {
 
 	this.onEstablishedCallback = options.onSourceEstablished;
 	this.onCompletedCallback = options.onSourceCompleted; // Never used
+
+	// used to check if next frame is sequential 
+	this.lastFrameIndex = null;
 };
 
 WSSource.prototype.connect = function(destination) {
@@ -71,13 +74,29 @@ WSSource.prototype.onMessage = function(ev) {
 	if (isFirstChunk && this.onEstablishedCallback) {
 		this.onEstablishedCallback(this);
 	}
+	
+	var data = new Uint8Array(ev.data);
+
+	if (isFirstChunk && this.destination) {
+		this.destination.write(data);
+		return
+	}
+	
+	var currFrameIndex = data[0];
+	var frame = data.slice(1);
 
 	if (this.destination) {
-		this.destination.write(ev.data);
+		this.destination.write(frame);
+
+		const expectedFrameIndex = this.lastFrameIndex === 255 ? 0 : this.lastFrameIndex + 1;
+		if (this.lastFrameIndex !== null && expectedFrameIndex !== currFrameIndex) {
+			console.error(`expectedFrameIndex: ${expectedFrameIndex}, currFrameIndex: ${currFrameIndex}`);
+		}
 	}
+
+	this.lastFrameIndex = currFrameIndex;
 };
 
 return WSSource;
 
 })();
-
