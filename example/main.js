@@ -24,18 +24,28 @@ const play = async () => {
   const hostname = location.hostname
   const wsURL = `ws://${hostname}:${ws.port}${ws.path}`
 
-  const canvas = document.createElement('canvas')
-  const wrap = document.querySelector('.players')
-  wrap.appendChild(canvas)
+  
+  const createPlayerAndPlay = () => {
+    const canvas = document.createElement('canvas')
+    const wrap = document.querySelector('.players')
+    wrap.appendChild(canvas)
 
-  const player = new JSMpeg.Player(wsURL, {
-    canvas,
-    // 似乎没什么作用
-    // videoBufferSize: 1024 * 1024 * 3,
-  })
+    const player = new JSMpeg.Player(wsURL, {
+      canvas,
+      wsOnFrameLossCallback: () => {
+        console.log('oops...')
+        player.destroy()
+        createPlayerAndPlay()
+      }
+      // 似乎没什么作用
+      // videoBufferSize: 1024 * 1024 * 3,
+    })
+  
+    player.play()
+    console.log(`play ${wsURL}`)
+  }
 
-  player.play()
-  console.log(`play ${wsURL}`)
+  createPlayerAndPlay()
 }
 
 const getStatus = () => {

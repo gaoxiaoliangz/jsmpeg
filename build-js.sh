@@ -30,7 +30,7 @@ echo "JSMpeg.WASM_BINARY_INLINED='$(cat jsmpeg-wasm.base64)';" \
 
 cp jsmpeg.js example/jsmpeg.js
 
-if [ version ]
+if [ ! -z "$version" ]
 then
 	mkdir -p dist
 	cp jsmpeg.js dist/jsmpeg-${version}.js
