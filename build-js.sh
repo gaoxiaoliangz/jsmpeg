@@ -1,5 +1,7 @@
 #!/bin/sh
 
+version=$1
+
 # Concat all .js sources
 cat \
 	src/jsmpeg.js \
@@ -27,5 +29,11 @@ echo "JSMpeg.WASM_BINARY_INLINED='$(cat jsmpeg-wasm.base64)';" \
 	>> jsmpeg.js
 
 cp jsmpeg.js example/jsmpeg.js
+
+if [ version ]
+then
+	mkdir -p dist
+	cp jsmpeg.js dist/jsmpeg-${version}.js
+fi
 
 echo "build completed"

@@ -7,6 +7,11 @@
   "license": "MIT",
   "scripts": {
     "build": "./build-js.sh",
-    "start": "serve example"
+    "start": "serve example",
+    "release": "standard-version --preset angular",
+    "postrelease": "node build.js"
+  },
+  "devDependencies": {
+    "standard-version": "^7.0.1"
   }
 }
