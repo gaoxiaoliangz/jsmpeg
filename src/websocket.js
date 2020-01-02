@@ -90,7 +90,7 @@ WSSource.prototype.onMessage = function(ev) {
 
 		const expectedFrameIndex = this.lastFrameIndex === 255 ? 0 : this.lastFrameIndex + 1;
 		if (this.lastFrameIndex !== null && expectedFrameIndex !== currFrameIndex) {
-			console.error(`expectedFrameIndex: ${expectedFrameIndex}, currFrameIndex: ${currFrameIndex}`);
+			console.error(`Frame index mismatch, expected frame index: ${expectedFrameIndex}, received frame index: ${currFrameIndex}`);
 			if (this.options.wsOnFrameLossCallback) {
 				this.options.wsOnFrameLossCallback()
 			}
