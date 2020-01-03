@@ -1,3 +1,4 @@
 node_modules
 /jsmpeg.js
 /example/jsmpeg.js
+*.vid.ts
